@@ -14,20 +14,21 @@
             <form id="loginForm" class="form1" action="login" method="post">
                 <div>
                     <div class="form-group col-md-12">
-                        <label for="username">Email</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Utilisateur">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
                     </div>
                     <div class="form-group col-md-12">
                         <label for="password">Mot de passe</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="mot de passe">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Mot de passe">
                     </div>
 
                     <div id="btn">
                         <button type="submit" class="btn btn-primary loginBtn">Se connecter</button>
-                        <a href="user?action=new"><button class="btn btn-primary loginBtn">S'inscrire</button></a>
+<%--                        <a href="user?action=new"><button class="btn btn-primary loginBtn">S'inscrire</button></a>--%>
                     </div>
                 </div>
             </form>
+            <a href="user?action=new"><button class="btn btn-primary loginBtn">S'inscrire</button></a>
         </div>
     </section>
 </main>

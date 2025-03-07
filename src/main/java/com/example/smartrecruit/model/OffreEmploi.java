@@ -4,12 +4,14 @@ public class OffreEmploi {
     private int offer_id;
     private String Title;
     private String Description;
-    private int pubDate;
+    private String pub_date;
 public OffreEmploi(){}
-    public OffreEmploi(String title, String description, int pubDate ) {
+
+    public OffreEmploi(String title, String pub_date, String description) {
         Title = title;
+        this.pub_date = pub_date;
         Description = description;
-        this.pubDate = pubDate;
+
     }
 
     public String getTitle() {
@@ -24,12 +26,12 @@ public OffreEmploi(){}
         return Description;
     }
 
-    public int getPubDate() {
-        return pubDate;
+    public String getPubDate() {
+        return pub_date;
     }
 
-    public void setPubDate(int pubDate) {
-        this.pubDate = pubDate;
+    public void setPubDate(String pubDate) {
+        this.pub_date= pubDate;
     }
 
     public void setDescription(String description) {

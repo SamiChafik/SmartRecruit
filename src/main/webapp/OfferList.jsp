@@ -7,13 +7,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles/addOffer.css">
+    <link rel="stylesheet" href="styles/OfferList.css">
     <title>Offers</title>
 </head>
 <body>
 <main>
     <section>
-      <h2>List of job offers</h2>
+      <h2 id="tt">List of job offers</h2>
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
             <tr>
@@ -24,10 +24,28 @@
 
             </tr>
             </thead>
+              <tbody>
+              <% List<OffreEmploi> offerlist =(List<OffreEmploi>) request.getAttribute("offerlist");
+              for(OffreEmploi offer :offerlist){
 
-            <tr>
 
-            </tr>
+              %>
+              <tr>
+                  <td><%= offer.getOffer_id()%></td>
+                  <td><%= offer.getTitle()%></td>
+                  <td><%= offer.getDescription()%></td>
+                  <td><%= offer.getPubDate()%></td>
+                  <td>
+                      <a href="OfferServlet?action=update&id=<%= offer.getOffer_id() %>" class="btn btn-primary">Update</a>
+                      <a href="OfferServlet?action=delete&id=<%= offer.getOffer_id() %>" class="btn btn-primary">Delete</a>
+                  </td>
+
+              </tr>
+              <% } %>
+              </tbody>
+
+        </table>
+        <a href="addOffer.jsp" class="btn btn-primary" id="addbtn">Add new Offer</a>
     </section>
 </main>
 

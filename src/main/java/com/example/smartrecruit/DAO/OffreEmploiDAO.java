@@ -14,7 +14,7 @@ public class OffreEmploiDAO {
     public OffreEmploiDAO() {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Smartrecuit","root","");
+            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/smartrecuit","root","");
             System.out.println("Connected to the database successfully");
 
         } catch (Exception e) {
@@ -27,7 +27,7 @@ public class OffreEmploiDAO {
         try(PreparedStatement ps=conn.prepareStatement(sql)){
             ps.setString(1,offreEmploi.getTitle());
             ps.setString(2,offreEmploi.getDescription());
-            ps.setInt(3,offreEmploi.getPubDate());
+            ps.setString(3,offreEmploi.getPubDate());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,7 +43,7 @@ public class OffreEmploiDAO {
              offer.setOffer_id(res.getInt("offer_id"));
              offer.setTitle(res.getString("title"));
              offer.setDescription(res.getString("description"));
-             offer.setPubDate(res.getInt("pub_date"));
+             offer.setPubDate(res.getString("pub_date"));
              offerlist.add(offer);
          }
         } catch (Exception e) {
@@ -62,7 +62,7 @@ OffreEmploi offer =null;
                     offer.setOffer_id(rs.getInt("offer_id"));
                     offer.setTitle(rs.getString("title"));
                     offer.setDescription(rs.getString("description"));
-                    offer.setPubDate(rs.getInt("pub_date"));
+                    offer.setPubDate(rs.getString("pub_date"));
 
                 }
             }
@@ -73,13 +73,17 @@ OffreEmploi offer =null;
         return offer;
  }
  public void update_offer(OffreEmploi offre){
-        String sql ="update offer set name=?,description=?,pub_date=? where offer_id=?";
+     System.out.println("ggggg");
+        String sql ="update offer set title=?,description=?,pub_date=? where offer_id=?";
+     System.out.println("ghjk");
         try(PreparedStatement ps =conn.prepareStatement(sql)){
+            System.out.println("mmmm");
             ps.setString(1,offre.getTitle());
             ps.setString(2,offre.getDescription());
-            ps.setInt(3, offre.getPubDate());
+            ps.setString(3, offre.getPubDate());
             ps.setInt(4, offre.getOffer_id());
             ps.executeUpdate();
+            System.out.println("bjnk,");
         }catch (Exception e){
             e.printStackTrace();
         }

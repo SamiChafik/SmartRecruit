@@ -1,3 +1,4 @@
+<%@ page import="com.example.smartrecruit.model.OffreEmploi" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,27 +12,32 @@
 <body>
 <main>
     <section>
+        <%
+            OffreEmploi offer =(OffreEmploi) request.getAttribute("offer")  ;
+        %>
         <div id="form">
             <form id="form1" class="form1" action="OfferServlet" method="post">
-                <h2>add an offer</h2>
+                 <input type="hidden" name="id" value="<%= offer.getOffer_id() %>"/>
+                 <input type="hidden" name="action" value="update"/>
+                <h2>Update offer details</h2>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="title">Title </label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="title of the offer">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="title of the offer" value="<%= offer.getTitle()%>">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="description">Description</label>
-                        <input type="text" class="form-control" id="description" name="description" placeholder="description of the offer">
+                        <input type="text" class="form-control" id="description" name="description" placeholder="description of the offer" value="<%= offer.getDescription()%>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="pub_date">date of publication</label>
-                    <input type="text" class="form-control" id="pub_date" name="pub_date" placeholder="date of publication">
+                    <input type="text" class="form-control" id="pub_date" name="pub_date" placeholder="date of publication" value="<%= offer.getPubDate()%>">
                 </div>
 
 
                 <div id="btn">
-                    <button type="submit" class="btn btn-primary">add</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
 
                 </div>
             </form>

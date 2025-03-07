@@ -1,28 +1,9 @@
 body {
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+
 }
 
-#form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 657px;
-}
-
-.form1 {
-    color: white;
-    font-size: 24px;
-    background-color: rgb(177, 177, 177);
-    padding: 3%;
-    width: 60%;
-    border-radius: 10px;
-    background: rgba(23, 23, 23, 0.5);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 1px 5px rgb(61, 61, 61);
-}
 
 #btn {
     display: flex;
@@ -32,7 +13,8 @@ body {
 }
 
 
-.btnLogin:hover {
-    background-color: rgb(135, 182, 64);
-    border-color: rgb(39, 167, 0);
+
+#tt{
+    text-align: center;
+
 }

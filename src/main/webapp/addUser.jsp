@@ -1,3 +1,4 @@
+<%@ page import="com.example.smartrecruit.DAO.Role" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,16 +42,16 @@
                             <label class="form-check-label" for="roleCandidat">Candidat</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="role" id="roleRecruiter" value="recruiter">
+                            <input class="form-check-input" type="radio" name="role" id="roleRecruiter" value="recruiteur">
                             <label class="form-check-label" for="roleRecruiter">Recruiteur</label>
                         </div>
                     </div>
                 </div>
                 <div id="btn">
                     <button type="submit" class="btn btn-primary">S'inscrire</button>
-                    <a href="log_in.jsp"><button class="btn btn-primary btnLogin">Se connecter</button></a>
                 </div>
             </form>
+            <a href="/login"><button class="btn btn-primary btnLogin">Se connecter</button></a>
         </div>
     </section>
 </main>

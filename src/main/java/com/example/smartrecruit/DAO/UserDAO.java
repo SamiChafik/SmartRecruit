@@ -35,7 +35,7 @@ public class UserDAO {
                     "last_name VARCHAR(100) NOT NULL, " +
                     "email VARCHAR(100) UNIQUE NOT NULL, " +
                     "password VARCHAR(100) NOT NULL, " +
-                    "role ENUM('admin', 'candidat', 'recruiteur') NOT NULL" +
+                    "role VARCHAR(15) NOT NULL" +
                     ")";
 
             statement.executeUpdate(sqlQuery);
@@ -61,5 +61,96 @@ public class UserDAO {
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
+    }
+
+    public User selectUser(int userId) {
+        User user = null;
+        String sql = "SELECT * FROM user WHERE user_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId); // Set the user ID parameter
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("user_id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                String role = resultSet.getString("role");
+
+                user = new User(id, lastName, firstName, email, password, role);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+        return user;
+    }
+
+    public boolean updateUser(User user) {
+        String sql = "UPDATE user SET first_name = ?, last_name = ?, email = ?, password = ?, role = ? WHERE user_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, user.getFirst_name());
+            statement.setString(2, user.getLast_name());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getRole());
+            statement.setInt(6, user.getId());
+
+            int rowsUpdated = statement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deleteUser(int userId) {
+        String sql = "DELETE FROM user WHERE user_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+
+            int rowsDeleted = statement.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public User checkLogin(String email, String password) {
+        User user = null;
+        String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, email);
+            statement.setString(2, password);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("user_id");
+                String dbEmail = resultSet.getString("email");
+                String dbPassword = resultSet.getString("password");
+                String dbRole = resultSet.getString("role");
+
+                user = new User();
+                user.setId(id);
+                user.setEmail(dbEmail);
+                user.setPassword(dbPassword);
+                user.setRole(dbRole);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }

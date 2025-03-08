@@ -3,6 +3,8 @@ package com.example.smartrecruit.DAO;
 import com.example.smartrecruit.model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     private String jdbcURL = "jdbc:mysql://localhost:3306/smartrecruit";
@@ -15,7 +17,7 @@ public class UserDAO {
     protected Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName(jdbcDriver); // Load the JDBC driver
+            Class.forName(jdbcDriver);
             connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("JDBC Driver not found: " + e.getMessage());
@@ -70,7 +72,7 @@ public class UserDAO {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, userId); // Set the user ID parameter
+            statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -87,6 +89,31 @@ public class UserDAO {
             System.err.println("SQL Error: " + e.getMessage());
         }
         return user;
+    }
+
+    public List<User> selectAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM user";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("user_id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                String role = resultSet.getString("role");
+
+                users.add(new User(id, lastName, firstName, email, password, role));
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+        return users;
     }
 
     public boolean updateUser(User user) {

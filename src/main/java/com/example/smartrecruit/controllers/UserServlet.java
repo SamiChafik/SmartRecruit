@@ -1,6 +1,5 @@
 package com.example.smartrecruit.controllers;
 
-import com.example.smartrecruit.DAO.Role;
 import com.example.smartrecruit.DAO.UserDAO;
 import com.example.smartrecruit.model.User;
 import jakarta.servlet.RequestDispatcher;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/user")
@@ -44,7 +42,7 @@ public class UserServlet extends HttpServlet {
                     insertUser(request, response);
                     break;
                 case "list":
-//                    listUser(request, response);
+                    listUser(request, response);
                     break;
                 case "delete":
                     deleteUser(request, response);
@@ -56,7 +54,7 @@ public class UserServlet extends HttpServlet {
                     updateUser(request, response);
                     break;
                 default:
-//                    showNewForm(request, response);
+                    listUser(request, response);
                     break;
             }
         } catch (Exception ex) {
@@ -65,7 +63,6 @@ public class UserServlet extends HttpServlet {
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         RequestDispatcher dispatcher = request.getRequestDispatcher("addUser.jsp");
         dispatcher.forward(request, response);
     }
@@ -89,41 +86,66 @@ public class UserServlet extends HttpServlet {
         response.sendRedirect("/log_in.jsp");
     }
 
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+    private void listUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession();
-        int userId = (int) session.getAttribute("user_id");
+        String role = (String) session.getAttribute("role");
 
-        User existingUser = userDAO.selectUser(userId);
-        if (existingUser == null) {
-
-            response.sendRedirect("user?action=new");
+        if (!"admin".equals(role)) {
+            response.sendRedirect("/log_in.jsp");
             return;
         }
 
-        request.setAttribute("user", existingUser);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("editUser.jsp");
+        List<User> users = userDAO.selectAllUsers();
+        request.setAttribute("users", users);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("listUsers.jsp");
         dispatcher.forward(request, response);
+    }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String idParam = request.getParameter("id");
+
+        if (idParam == null || idParam.isEmpty()) {
+
+            response.sendRedirect("user?action=list");
+            return;
+        }
+
+        try {
+            int userId = Integer.parseInt(idParam);
+            User existingUser = userDAO.selectUser(userId);
+
+            if (existingUser == null) {
+                response.sendRedirect("user?action=list");
+                return;
+            }
+
+            request.setAttribute("user", existingUser);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("editUser.jsp");
+            dispatcher.forward(request, response);
+
+        } catch (NumberFormatException e) {
+            response.sendRedirect("user?action=list");
+        }
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        HttpSession session = request.getSession();
-        int id = (int) session.getAttribute("user_id"); // Get user ID from session
-
+        int id = Integer.parseInt(request.getParameter("id"));
         String first_name = request.getParameter("first_name");
         String last_name = request.getParameter("last_name");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
 
-        // Create the User object with the correct parameters
         User user = new User(id, last_name, first_name, email, password, role);
 
         boolean updated = userDAO.updateUser(user);
 
         if (updated) {
-            response.sendRedirect("logout"); // Redirect to the user list or profile page
+            response.sendRedirect("user?action=list");
         } else {
             request.setAttribute("errorMessage", "Failed to update user");
             RequestDispatcher dispatcher = request.getRequestDispatcher("editUser.jsp");
@@ -133,18 +155,16 @@ public class UserServlet extends HttpServlet {
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        HttpSession session = request.getSession();
-        int userId = (int) session.getAttribute("user_id"); // Get user ID from session
-
+        int userId = Integer.parseInt(request.getParameter("id"));
         boolean deleted = userDAO.deleteUser(userId);
 
         if (deleted) {
-            session.invalidate(); // Invalidate the session after account deletion
-            response.sendRedirect("/log_in.jsp"); // Redirect to the login page
+            response.sendRedirect("user?action=list");
         } else {
             request.setAttribute("errorMessage", "Failed to delete user");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("editUser.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("listUsers.jsp");
             dispatcher.forward(request, response);
         }
     }
+
 }

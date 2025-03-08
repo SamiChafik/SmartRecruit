@@ -40,13 +40,13 @@ public class LoginServlet extends HttpServlet {
 
             switch (user.getRole()) {
                 case "admin":
-                    response.sendRedirect("/user?action=edit_form");
+                    response.sendRedirect("/user?action=list");
                     break;
                 case "recruiteur":
-                    response.sendRedirect("/user?action=edit_form");
+                    response.sendRedirect("/user?action=edit_form&id=" + user.getId());
                     break;
                 case "candidat":
-                    response.sendRedirect("/user?action=edit_form");
+                    response.sendRedirect("/user?action=edit_form&id=" + user.getId());
                     break;
                 default:
                     request.setAttribute("errorMessage", "Invalid username or password");

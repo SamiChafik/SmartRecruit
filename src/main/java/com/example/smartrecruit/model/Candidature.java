@@ -4,6 +4,8 @@ public class Candidature {
     private int offer_id;
     private int user_id;
     private int c_id;
+    private User user;
+    private OffreEmploi offer;
 
     public Candidature() {
     }
@@ -36,5 +38,21 @@ public class Candidature {
 
     public void setC_id(int c_id) {
         this.c_id = c_id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public OffreEmploi getOffer() {
+        return offer;
+    }
+
+    public void setOffer(OffreEmploi offer) {
+        this.offer = offer;
     }
 }

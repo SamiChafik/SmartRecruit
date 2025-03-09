@@ -165,12 +165,16 @@ public class UserDAO {
 
             if (resultSet.next()) {
                 int id = resultSet.getInt("user_id");
+                String dbLast_name = resultSet.getString("last_name");
+                String dbFirst_name = resultSet.getString("first_name");
                 String dbEmail = resultSet.getString("email");
                 String dbPassword = resultSet.getString("password");
                 String dbRole = resultSet.getString("role");
 
                 user = new User();
                 user.setId(id);
+                user.setLast_name(dbLast_name);
+                user.setFirst_name(dbFirst_name);
                 user.setEmail(dbEmail);
                 user.setPassword(dbPassword);
                 user.setRole(dbRole);

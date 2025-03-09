@@ -4,6 +4,7 @@ import com.example.smartrecruit.DAO.CandidatureDAO;
 import com.example.smartrecruit.DAO.OffreEmploiDAO;
 import com.example.smartrecruit.DAO.UserDAO;
 import com.example.smartrecruit.model.User;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -46,26 +47,29 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user_id", user.getId());
             session.setAttribute("role", user.getRole());
+            session.setAttribute("user", user);
+
 
             switch (user.getRole()) {
                 case "admin":
-                    response.sendRedirect("/user?action=list");
+                    response.sendRedirect(request.getContextPath() + "/OfferServlet");
                     break;
                 case "recruiteur":
-                    response.sendRedirect("/user?action=edit_form&id=" + user.getId());
+                    response.sendRedirect(request.getContextPath() + "/OfferServlet");
                     break;
                 case "candidat":
-                    response.sendRedirect("/user?action=edit_form&id=" + user.getId());
+                    response.sendRedirect(request.getContextPath() + "/OfferServlet");
                     break;
                 default:
-                    request.setAttribute("errorMessage", "Invalid username or password");
-                    response.sendRedirect("/log_in.jsp");
+                    request.setAttribute("errorMessage", "Invalid role");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/log_in.jsp");
+                    dispatcher.forward(request, response);
                     break;
             }
         } else {
             request.setAttribute("errorMessage", "Invalid username or password");
-            response.sendRedirect("/log_in.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/log_in.jsp");
+            dispatcher.forward(request, response);
         }
     }
 }
-

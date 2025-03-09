@@ -1,6 +1,8 @@
 package com.example.smartrecruit.DAO;
 
 import com.example.smartrecruit.model.Candidature;
+import com.example.smartrecruit.model.OffreEmploi;
+import com.example.smartrecruit.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,7 +10,6 @@ import java.util.List;
 
 public class CandidatureDAO {
 
-    // Use the getConnection() method to get a connection for each database operation
     protected Connection getConnection() {
         Connection connection = null;
         try {
@@ -91,7 +92,11 @@ public class CandidatureDAO {
 
     public List<Candidature> getCandidaturesByOfferId(int offer_id) {
         List<Candidature> candList = new ArrayList<>();
-        String sql = "SELECT * FROM candidature WHERE offer_id=?";
+        String sql = "SELECT c.*, u.first_name, u.last_name, o.title " +
+                "FROM candidature c " +
+                "JOIN user u ON c.user_id = u.user_id " +
+                "JOIN offer o ON c.offer_id = o.offer_id " +
+                "WHERE c.offer_id = ?";
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, offer_id);
@@ -99,8 +104,21 @@ public class CandidatureDAO {
                 while (rs.next()) {
                     Candidature cand = new Candidature();
                     cand.setC_id(rs.getInt("c_id"));
-                    cand.setOffer_id(rs.getInt("offer_id"));
                     cand.setUser_id(rs.getInt("user_id"));
+                    cand.setOffer_id(rs.getInt("offer_id"));
+
+                    // Populate User object
+                    User user = new User();
+                    user.setFirst_name(rs.getString("first_name"));
+                    user.setLast_name(rs.getString("last_name"));
+                    cand.setUser(user);
+
+                    // Populate Offer object
+                    OffreEmploi offer = new OffreEmploi();
+                    offer.setOffer_id(rs.getInt("offer_id"));
+                    offer.setTitle(rs.getString("title"));
+                    cand.setOffer(offer);
+
                     candList.add(cand);
                 }
             }
@@ -112,7 +130,10 @@ public class CandidatureDAO {
 
     public List<Candidature> getCandidaturesByUserId(int user_id) {
         List<Candidature> candList = new ArrayList<>();
-        String sql = "SELECT * FROM candidature WHERE user_id=?";
+        String sql = "SELECT c.*, o.title " +
+                "FROM candidature c " +
+                "JOIN offer o ON c.offer_id = o.offer_id " +
+                "WHERE c.user_id = ?";
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, user_id);
@@ -120,8 +141,14 @@ public class CandidatureDAO {
                 while (rs.next()) {
                     Candidature cand = new Candidature();
                     cand.setC_id(rs.getInt("c_id"));
-                    cand.setOffer_id(rs.getInt("offer_id"));
                     cand.setUser_id(rs.getInt("user_id"));
+                    cand.setOffer_id(rs.getInt("offer_id"));
+
+                    OffreEmploi offer = new OffreEmploi();
+                    offer.setOffer_id(rs.getInt("offer_id"));
+                    offer.setTitle(rs.getString("title"));
+                    cand.setOffer(offer);
+
                     candList.add(cand);
                 }
             }

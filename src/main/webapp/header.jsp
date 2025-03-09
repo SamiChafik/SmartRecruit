@@ -10,7 +10,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- Brand/Logo with User's Name -->
         <a class="navbar-brand" href="#">
-            Welcome, <%= firstName %> <%= lastName %> | <%= role%>
+            Bienvenue, <%= firstName %> <%= lastName %> | <%= role%>
         </a>
 
         <!-- Toggle Button for Mobile -->
@@ -24,7 +24,7 @@
                 <!-- Common actions for all roles -->
                 <li class="nav-item">
                     <a class="nav-link" href="/OfferServlet">
-                        <button class="btn btn-outline-primary">List of Offers</button>
+                        <button class="btn btn-outline-primary">Liste des offers</button>
                     </a>
                 </li>
 
@@ -32,17 +32,17 @@
                 <% if ("admin".equals(role)) { %>
                 <li class="nav-item">
                     <a class="nav-link" href="/user?action=list">
-                        <button class="btn btn-outline-warning">List of Users</button>
+                        <button class="btn btn-outline-warning">Liste d'utilisateurs</button>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user?action=edit_form&id=<%=user != null ? user.getId() : ""%>">
-                        <button class="btn btn-outline-primary">Edit Profile</button>
+                        <button class="btn btn-outline-primary">Modifier Profile</button>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/addOffer.jsp">
-                        <button class="btn btn-outline-success">Create Offer</button>
+                        <button class="btn btn-outline-success">Creer un offer</button>
                     </a>
                 </li>
                 <% } %>
@@ -51,12 +51,12 @@
                 <% if ("candidat".equals(role)) { %>
                 <li class="nav-item">
                     <a class="nav-link" href="/user?action=edit_form&id=<%=user != null ? user.getId() : ""%>">
-                        <button class="btn btn-outline-primary">Edit Profile</button>
+                        <button class="btn btn-outline-primary">Modifier Profile</button>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/CandidatureServlet?action=viewAppliedOffers">
-                        <button class="btn btn-outline-info">Offers I Applied To</button>
+                        <button class="btn btn-outline-info">Offers postule</button>
                     </a>
                 </li>
                 <% } %>
@@ -64,8 +64,13 @@
                 <!-- Actions for recruiteur -->
                 <% if ("recruiteur".equals(role)) { %>
                 <li class="nav-item">
+                    <a class="nav-link" href="/user?action=edit_form&id=<%=user != null ? user.getId() : ""%>">
+                        <button class="btn btn-outline-primary">Modifier Profile</button>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/addOffer.jsp">
-                        <button class="btn btn-outline-success">Create Offer</button>
+                        <button class="btn btn-outline-success">Creer un offer</button>
                     </a>
                 </li>
                 <% } %>
@@ -73,7 +78,7 @@
                 <!-- Logout button for all roles -->
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">
-                        <button class="btn btn-danger">Logout</button>
+                        <button class="btn btn-danger">Deconnexion</button>
                     </a>
                 </li>
             </ul>

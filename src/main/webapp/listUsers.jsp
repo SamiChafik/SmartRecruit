@@ -11,16 +11,16 @@
 <jsp:include page="header.jsp" />
 <main>
   <section>
-    <h2>List of Users</h2>
+    <h2>Liste d'utilisateurs</h2>
     <table class="table table-striped">
       <thead>
       <tr>
         <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th>Prenom</th>
+        <th>Nom</th>
         <th>Email</th>
         <th>Role</th>
-        <th>Actions</th>
+        <th>Option</th>
       </tr>
       </thead>
       <tbody>
@@ -37,11 +37,11 @@
         <td><%= user.getRole() %></td>
         <td>
           <!-- Edit Button -->
-          <a href="/user?action=edit_form&id=<%= user.getId() %>" class="btn btn-warning">Edit</a>
+          <a href="/user?action=edit_form&id=<%= user.getId() %>" class="btn btn-warning">Modifier</a>
           <!-- Delete Button -->
           <form action="/user?action=delete" method="post" style="display: inline;">
             <input type="hidden" name="id" value="<%= user.getId() %>">
-            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="submit" class="btn btn-danger">Supprimer</button>
           </form>
         </td>
       </tr>

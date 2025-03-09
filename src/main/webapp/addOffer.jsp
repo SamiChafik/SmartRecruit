@@ -14,10 +14,10 @@
     <section>
         <div id="form">
             <form id="form1" class="form1" action="OfferServlet" method="post">
-                <h2>add an offer</h2>
+                <h2>Creer un offer</h2>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="title">Title </label>
+                        <label for="title">Titre </label>
                         <input type="text" class="form-control" id="title" name="title" placeholder="title of the offer">
                     </div>
                     <div class="form-group col-md-6">
@@ -27,14 +27,14 @@
                 </div>
                 <div class="form-group">
                     <div class="form-group col-md-12">
-                        <label for="pub_date">Date de naissance</label>
+                        <label for="pub_date">Date de creation</label>
                         <input type="date" class="form-control" id="pub_date" name="pub_date" placeholder="">
                     </div>
                 </div>
 
 
                 <div id="btn">
-                    <button type="submit" class="btn btn-primary">add</button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
 
                 </div>
             </form>

@@ -31,14 +31,14 @@
         <%
             List<OffreEmploi> offerlist = (List<OffreEmploi>) request.getAttribute("offerlist");
         %>
-        <h2 id="tt">List of job offers</h2>
+        <h2 id="tt">Liste des offers</h2>
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
             <tr>
                 <th>ID</th>
-                <th>TITLE</th>
+                <th>TITRE</th>
                 <th>DESCRIPTION</th>
-                <th>DATE OF PUBLICATION</th>
+                <th>DATE DE PUBLICATION</th>
                 <th>OPTION</th>
             </tr>
             </thead>
@@ -54,12 +54,12 @@
                 <td><%= offer.getPubDate() %></td>
                 <td>
                     <% if ("candidat".equals(role)) { %>
-                    <a href="CandidatureServlet?action=apply&offer_id=<%= offer.getOffer_id() %>" class="btn btn-primary">Apply</a>
+                    <a href="CandidatureServlet?action=apply&offer_id=<%= offer.getOffer_id() %>" class="btn btn-primary">Postuler</a>
                     <% } %>
                     <% if ("recruiteur".equals(role) || "admin".equals(role)) { %>
-                    <a href="CandidatureServlet?action=viewCandidates&offer_id=<%= offer.getOffer_id() %>" class="btn btn-primary">View Candidates</a>
-                    <a href="OfferServlet?action=update&id=<%= offer.getOffer_id() %>" class="btn btn-warning">Edit</a>
-                    <a href="OfferServlet?action=delete&id=<%= offer.getOffer_id() %>" class="btn btn-danger">Delete</a>
+                    <a href="CandidatureServlet?action=viewCandidates&offer_id=<%= offer.getOffer_id() %>" class="btn btn-primary">Voir Candidates</a>
+                    <a href="OfferServlet?action=update&id=<%= offer.getOffer_id() %>" class="btn btn-warning">Modifier</a>
+                    <a href="OfferServlet?action=delete&id=<%= offer.getOffer_id() %>" class="btn btn-danger">Supprimer</a>
                     <% } %>
                 </td>
             </tr>

@@ -8,12 +8,7 @@
   <link rel="stylesheet" href="styles/listUsers.css">
 </head>
 <body>
-<header>
-  <nav>
-    <a href="/user?action=new"><button class="btn btn-primary">Add New User</button></a>
-    <a href="/logout"><button class="btn btn-danger">Déconnecter</button></a>
-  </nav>
-</header>
+<jsp:include page="header.jsp" />
 <main>
   <section>
     <h2>List of Users</h2>

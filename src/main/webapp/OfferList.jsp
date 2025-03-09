@@ -1,6 +1,8 @@
 <%@ page import="java.util.List" %>
+<%@ page import="com.example.smartrecruit.model.User" %>
 <%@ page import="com.example.smartrecruit.model.OffreEmploi" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +13,25 @@
     <title>Offers</title>
 </head>
 <body>
+<%
+    User user = (User) session.getAttribute("user");
+    String role = (String) session.getAttribute("role");
+    String firstName = user != null ? user.getFirst_name() : "";
+    String lastName = user != null ? user.getLast_name() : "";
+
+    if (user == null) {
+        System.out.println("User object is null in the session.");
+    } else {
+        System.out.println("User object found: " + user.getFirst_name() + " " + user.getLast_name());
+    }
+%>
+<jsp:include page="header.jsp" />
 <main>
     <section>
-      <h2 id="tt">List of job offers</h2>
+        <%
+            List<OffreEmploi> offerlist = (List<OffreEmploi>) request.getAttribute("offerlist");
+        %>
+        <h2 id="tt">List of job offers</h2>
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
             <tr>
@@ -22,31 +40,35 @@
                 <th>DESCRIPTION</th>
                 <th>DATE OF PUBLICATION</th>
                 <th>OPTION</th>
-
             </tr>
             </thead>
-              <tbody>
-              <% List<OffreEmploi> offerlist =(List<OffreEmploi>) request.getAttribute("offerlist");
-              for(OffreEmploi offer :offerlist){
-
-
-              %>
-              <tr>
-                  <td><%= offer.getOffer_id()%></td>
-                  <td><%= offer.getTitle()%></td>
-                  <td><%= offer.getDescription()%></td>
-                  <td><%= offer.getPubDate()%></td>
-                  <td>
-                      <a href="OfferServlet?action=update&id=<%= offer.getOffer_id() %>" class="btn btn-primary">Update</a>
-                      <a href="OfferServlet?action=delete&id=<%= offer.getOffer_id() %>" class="btn btn-primary">Delete</a>
-                  </td>
-
-              </tr>
-              <% } %>
-              </tbody>
-
+            <tbody>
+            <%
+                if (offerlist != null) {
+                    for (OffreEmploi offer : offerlist) {
+            %>
+            <tr>
+                <td><%= offer.getOffer_id() %></td>
+                <td><%= offer.getTitle() %></td>
+                <td><%= offer.getDescription() %></td>
+                <td><%= offer.getPubDate() %></td>
+                <td>
+                    <% if ("candidat".equals(role)) { %>
+                    <a href="CandidatureServlet?action=apply&offer_id=<%= offer.getOffer_id() %>" class="btn btn-primary">Apply</a>
+                    <% } %>
+                    <% if ("recruiteur".equals(role) || "admin".equals(role)) { %>
+                    <a href="CandidatureServlet?action=viewCandidates&offer_id=<%= offer.getOffer_id() %>" class="btn btn-primary">View Candidates</a>
+                    <a href="OfferServlet?action=update&id=<%= offer.getOffer_id() %>" class="btn btn-warning">Edit</a>
+                    <a href="OfferServlet?action=delete&id=<%= offer.getOffer_id() %>" class="btn btn-danger">Delete</a>
+                    <% } %>
+                </td>
+            </tr>
+            <%
+                    }
+                }
+            %>
+            </tbody>
         </table>
-        <a href="addOffer.jsp" class="btn btn-primary" id="addbtn">Add new Offer</a>
     </section>
 </main>
 

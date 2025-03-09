@@ -10,6 +10,7 @@
     <title>add</title>
 </head>
 <body>
+<jsp:include page="header.jsp" />
 <main>
     <section>
         <%

@@ -8,13 +8,7 @@
     <link rel="stylesheet" href="styles/addUser.css">
 </head>
 <body>
-<header>
-    <nav>
-        <a href="/user?action=edit_form&id=<%=user != null ? user.getId() : ""%>"><button class="btn btn-primary">Modifier</button></a>
-        <a href="/user?action=list"><button class="btn btn-warning">Liste of users</button></a>
-        <a href="/logout"><button class="btn btn-danger">Déconnecter</button></a>
-    </nav>
-</header>
+<jsp:include page="header.jsp" />
 <main>
     <section>
         <div id="form">

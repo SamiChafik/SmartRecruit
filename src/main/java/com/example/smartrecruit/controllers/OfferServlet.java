@@ -22,16 +22,16 @@ public class OfferServlet extends HttpServlet {
         String action = req.getParameter("action");
         if("update".equals(action)){
             int id = Integer.parseInt(req.getParameter("id"));
-            OffreEmploi offer= offerdao.get_offre_byId(id);
+            OffreEmploi offer= offerdao.getOffreById(id);
             req.setAttribute("offer",offer);
             req.getRequestDispatcher("UpdateOffer.jsp").forward(req,resp);
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(req.getParameter("id"));
-            offerdao.delete_offer(id);
+            offerdao.deleteOffer(id);
             resp.sendRedirect(req.getContextPath()+"/OfferServlet");
 
         }else {
-            List<OffreEmploi> offerlist = offerdao.display_offers();
+            List<OffreEmploi> offerlist = offerdao.displayOffers();
             req.setAttribute("offerlist",offerlist);
             req.getRequestDispatcher("OfferList.jsp").forward(req,resp);
         }
@@ -47,13 +47,13 @@ public class OfferServlet extends HttpServlet {
 
             OffreEmploi offer= new OffreEmploi(title,description,pub_date);
             offer.setOffer_id(id);
-            offerdao.update_offer(offer);
+            offerdao.updateOffer(offer);
         }else {
             String title= req.getParameter("title");
             String description= req.getParameter("description");
             String pub_date= req.getParameter("pub_date");
             OffreEmploi offer= new OffreEmploi(title,description,pub_date);
-            offerdao.add_offre_emploi(offer);
+            offerdao.addOffreEmploi(offer);
         }
         resp.sendRedirect(req.getContextPath()+"/OfferServlet");
     }

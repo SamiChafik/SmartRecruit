@@ -7,10 +7,11 @@ public class OffreEmploi {
     private String pub_date;
 public OffreEmploi(){}
 
-    public OffreEmploi(String title, String pub_date, String description) {
-        Title = title;
+    public OffreEmploi(String title, String description, String pub_date) {
+        this.Title = title;
+        this.Description = description;
         this.pub_date = pub_date;
-        Description = description;
+
 
     }
 

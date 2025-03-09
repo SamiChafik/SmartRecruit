@@ -2,99 +2,118 @@ package com.example.smartrecruit.DAO;
 
 import com.example.smartrecruit.model.OffreEmploi;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OffreEmploiDAO {
-    private Connection conn;
-    public OffreEmploiDAO() {
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/smartrecuit","root","");
-            System.out.println("Connected to the database successfully");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Failed to connect to database");;
+    protected Connection getConnection() {
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/smartrecruit", "root", "123456789");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("JDBC Driver not found: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to connect to the database: " + e.getMessage());
+        }
+        return connection;
+    }
+
+    public void createOfferTable() {
+        String sqlQuery = "CREATE TABLE IF NOT EXISTS offer (" +
+                "offer_id INT PRIMARY KEY AUTO_INCREMENT, " +
+                "title VARCHAR(100) NOT NULL, " +
+                "description VARCHAR(250) NOT NULL, " +
+                "pub_date DATE NOT NULL" +
+                ")";
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate(sqlQuery);
+            System.out.println("Table 'offer' created successfully!");
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
         }
     }
- public void add_offre_emploi(OffreEmploi offreEmploi){
-        String sql="insert into offer(title , description, pub_date) values(?,?,?)";
-        try(PreparedStatement ps=conn.prepareStatement(sql)){
-            ps.setString(1,offreEmploi.getTitle());
-            ps.setString(2,offreEmploi.getDescription());
-            ps.setString(3,offreEmploi.getPubDate());
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
- }
- public List<OffreEmploi> display_offers(){
-        List<OffreEmploi> offerlist = new ArrayList<>();
-        String sql ="select *from offer";
-        try(PreparedStatement ps =conn.prepareStatement(sql); ResultSet res =ps.executeQuery()){
-         while(res.next()){
-             OffreEmploi offer = new OffreEmploi();
-             offer.setOffer_id(res.getInt("offer_id"));
-             offer.setTitle(res.getString("title"));
-             offer.setDescription(res.getString("description"));
-             offer.setPubDate(res.getString("pub_date"));
-             offerlist.add(offer);
-         }
-        } catch (Exception e) {
+    public void addOffreEmploi(OffreEmploi offreEmploi) {
+        String sql = "INSERT INTO offer (title, description, pub_date) VALUES (?, ?, ?)";
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, offreEmploi.getTitle());
+            ps.setString(2, offreEmploi.getDescription());
+            ps.setDate(3, Date.valueOf(offreEmploi.getPubDate())); // Convert String to SQL Date
+            ps.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return offerlist;
- }
- public OffreEmploi get_offre_byId(int offer_id){
-OffreEmploi offer =null;
-        String sql ="select *from offer where offer_id=?";
-        try(PreparedStatement ps =conn.prepareStatement(sql)){
-            ps.setInt(1,offer_id);
-            try(ResultSet rs=ps.executeQuery()){
-                if(rs.next()){
+    }
+
+    public List<OffreEmploi> displayOffers() {
+        List<OffreEmploi> offerList = new ArrayList<>();
+        String sql = "SELECT * FROM offer";
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                OffreEmploi offer = new OffreEmploi();
+                offer.setOffer_id(rs.getInt("offer_id"));
+                offer.setTitle(rs.getString("title"));
+                offer.setDescription(rs.getString("description"));
+                offer.setPubDate(rs.getDate("pub_date").toString()); // Convert SQL Date to String
+                offerList.add(offer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return offerList;
+    }
+
+    public OffreEmploi getOffreById(int offer_id) {
+        OffreEmploi offer = null;
+        String sql = "SELECT * FROM offer WHERE offer_id=?";
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, offer_id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                     offer = new OffreEmploi();
                     offer.setOffer_id(rs.getInt("offer_id"));
                     offer.setTitle(rs.getString("title"));
                     offer.setDescription(rs.getString("description"));
-                    offer.setPubDate(rs.getString("pub_date"));
-
+                    offer.setPubDate(rs.getDate("pub_date").toString()); // Convert SQL Date to String
                 }
             }
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return offer;
- }
- public void update_offer(OffreEmploi offre){
-     System.out.println("ggggg");
-        String sql ="update offer set title=?,description=?,pub_date=? where offer_id=?";
-     System.out.println("ghjk");
-        try(PreparedStatement ps =conn.prepareStatement(sql)){
-            System.out.println("mmmm");
-            ps.setString(1,offre.getTitle());
-            ps.setString(2,offre.getDescription());
-            ps.setString(3, offre.getPubDate());
+    }
+
+    public void updateOffer(OffreEmploi offre) {
+        String sql = "UPDATE offer SET title=?, description=?, pub_date=? WHERE offer_id=?";
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, offre.getTitle());
+            ps.setString(2, offre.getDescription());
+            ps.setDate(3, Date.valueOf(offre.getPubDate())); // Convert String to SQL Date
             ps.setInt(4, offre.getOffer_id());
             ps.executeUpdate();
-            System.out.println("bjnk,");
-        }catch (Exception e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
- }
-public  void delete_offer(int offer_id){
-        String sql ="delete from offer where offer_id=?";
-        try(PreparedStatement ps =conn.prepareStatement(sql)){
-            ps.setInt(1,offer_id);
+    }
+
+    public void deleteOffer(int offer_id) {
+        String sql = "DELETE FROM offer WHERE offer_id=?";
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, offer_id);
             ps.executeUpdate();
-        }catch (Exception e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-}
+    }
 }

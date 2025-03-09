@@ -21,6 +21,7 @@
                 <th>TITLE</th>
                 <th>DESCRIPTION</th>
                 <th>DATE OF PUBLICATION</th>
+                <th>OPTION</th>
 
             </tr>
             </thead>

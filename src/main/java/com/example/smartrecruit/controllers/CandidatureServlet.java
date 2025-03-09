@@ -23,7 +23,7 @@ public class CandidatureServlet  extends HttpServlet {
         String action=req.getParameter("action");
         if("update".equals(action)){
             int id=Integer.parseInt(req.getParameter("c_id"));
-            Candidature cand =cDao.getcanById(id);
+            Candidature cand =cDao.getCandidatureById(id);
             req.setAttribute("candidature",cand);
             req.getRequestDispatcher("").forward(req,resp);
         } else if ("delete".equals(action)) {
@@ -47,7 +47,7 @@ public class CandidatureServlet  extends HttpServlet {
 
         }else {
             Candidature cand=new Candidature();
-            cDao.Apply(cand);
+            cDao.apply(cand);
         }
         resp.sendRedirect(req.getContextPath()+"/CandidatureServlet");
     }

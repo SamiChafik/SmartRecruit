@@ -25,8 +25,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="pub_date">date of publication</label>
-                    <input type="text" class="form-control" id="pub_date" name="pub_date" placeholder="date of publication">
+                    <div class="form-group col-md-12">
+                        <label for="pub_date">Date de naissance</label>
+                        <input type="date" class="form-control" id="pub_date" name="pub_date" placeholder="">
+                    </div>
                 </div>
 
 

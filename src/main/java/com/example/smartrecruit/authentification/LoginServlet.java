@@ -1,5 +1,7 @@
 package com.example.smartrecruit.authentification;
 
+import com.example.smartrecruit.DAO.CandidatureDAO;
+import com.example.smartrecruit.DAO.OffreEmploiDAO;
 import com.example.smartrecruit.DAO.UserDAO;
 import com.example.smartrecruit.model.User;
 import jakarta.servlet.ServletException;
@@ -18,6 +20,13 @@ public class LoginServlet extends HttpServlet {
 
     public void init() {
         userDAO = new UserDAO();
+        userDAO.createUserTable();
+
+        OffreEmploiDAO offreEmploiDAO = new OffreEmploiDAO();
+        offreEmploiDAO.createOfferTable();
+
+        CandidatureDAO candidatureDAO = new CandidatureDAO();
+        candidatureDAO.createCandidatureTable();
     }
 
     @Override
